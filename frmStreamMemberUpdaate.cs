@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using static RuleManager.Utils;
+using static RuleDConversion.Utils;
 
-namespace RuleManager;
+namespace RuleDConversion;
 public partial class FrmStreamMemberUpdaate : Form
 {
     static string OracleConnString;

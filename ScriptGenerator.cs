@@ -1,6 +1,6 @@
-﻿using static RuleManager.Utils;
+﻿using static RuleDConversion.Utils;
 
-namespace RuleManager;
+namespace RuleDConversion;
 
 internal static class ScriptGenerator
 {
@@ -239,7 +239,6 @@ internal static class ScriptGenerator
         }
         catch (Exception ex)
         {
-            ok = false;
             Console.WriteLine(ex.Message);
             throw;
         }
@@ -261,13 +260,14 @@ internal static class ScriptGenerator
                 ConnectionString = OracleConnString
             };
 
-            OracleCommand cmd = new();
-            cmd.Connection = conn;
-
-            cmd.CommandText = @"INSERT INTO TMPRULED (F_RULE_NUMBER,F_CALC,F_CALC_ORA)
+            OracleCommand cmd = new()
+            {
+                Connection = conn,
+                CommandText = @"INSERT INTO TMPRULED (F_RULE_NUMBER,F_CALC,F_CALC_ORA)
 								SELECT F_RULE_NUMBER, F_CALC, F_CALC_ORA 
 								FROM T_D_RULES 
-								WHERE LENGTH(F_CALC_ORA) > 0";
+								WHERE LENGTH(F_CALC_ORA) > 0"
+            };
 
             conn.Open();
             cmd.ExecuteNonQuery();
@@ -314,17 +314,16 @@ internal static class ScriptGenerator
 
             OracleCommand cmd = new()
             {
-                Connection = conn
-            };
-
-            cmd.CommandText = @"BEGIN
+                Connection = conn,
+                CommandText = @"BEGIN
 								    EXECUTE IMMEDIATE 'DROP TABLE TMPRULED';    
 								    EXCEPTION
 									    WHEN OTHERS THEN
 										    IF sqlcode != -942 THEN
 											    RAISE;
 										    END IF;  
-							    END; ";
+							    END; "
+            };
 
             conn.Open();
             cmd.ExecuteNonQuery();

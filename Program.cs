@@ -1,4 +1,4 @@
-namespace RuleManager
+namespace RuleDConversion
 {
     internal static class Program
     {

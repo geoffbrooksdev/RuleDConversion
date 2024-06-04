@@ -1,4 +1,4 @@
-﻿namespace RuleManager;
+﻿namespace RuleDConversion;
 public partial class frmMain : Form
 {
     public frmMain()

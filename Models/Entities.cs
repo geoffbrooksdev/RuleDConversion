@@ -1,4 +1,4 @@
-﻿namespace RuleManager.Models;
+﻿namespace RuleDConversion.Models;
 
 public class RuleStream
 {

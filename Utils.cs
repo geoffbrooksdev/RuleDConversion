@@ -1,4 +1,4 @@
-﻿namespace RuleManager;
+﻿namespace RuleDConversion;
 internal static class Utils
 {
     internal static string FormatQueryText(string queryToRun)

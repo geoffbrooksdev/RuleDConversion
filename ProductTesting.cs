@@ -1,9 +1,9 @@
-﻿namespace RuleManager;
+﻿namespace RuleDConversion;
 
 internal static class ProductTesting
 {
-    internal static string OracleConnString;
-    internal static string SqlConnString;
+    //internal static string OracleConnString;
+    //internal static string SqlConnString;
 
     internal static SqlConnection sqlConn = new();
     internal static OracleConnection oraConn = new();
@@ -31,10 +31,9 @@ internal static class ProductTesting
 
     internal static bool CopyProduct(string productId)
     {
-        //just create the minimum data needed for RULE D Processing...
-        bool ok = false;
 
-        ok = AddProduct(productId);
+        //just create the minimum data needed for RULE D Processing...
+        var ok = AddProduct(productId);
         ok = AddProductAlias(productId);
         ok = AddFormulation(productId);
 

@@ -1,6 +1,6 @@
-﻿using static RuleManager.Utils;
+﻿using static RuleDConversion.Utils;
 
-namespace RuleManager;
+namespace RuleDConversion;
 public partial class FrmTests : Form
 {
     // static string OracleConnString;
@@ -24,7 +24,7 @@ public partial class FrmTests : Form
 
     private void BtnCopyFromGolden_Click(object sender, EventArgs e)
     {
-        string productId = txtProduct.Text;
+       // string productId = txtProduct.Text;
 
 
 

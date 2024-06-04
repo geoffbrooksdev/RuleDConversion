@@ -1,6 +1,7 @@
-﻿using Rule = RuleManager.Models.Rule;
+﻿using RuleDConversion.Models;
+using Rule = RuleDConversion.Models.Rule;
 
-namespace RuleManager;
+namespace RuleDConversion;
 
 internal static class DataUtils
 {

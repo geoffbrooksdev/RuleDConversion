@@ -1,4 +1,4 @@
-namespace RuleManager;
+namespace RuleDConversion;
 
 public partial class FrmSingleUpdate : Form
 {

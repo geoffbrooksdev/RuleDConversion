@@ -1,6 +1,6 @@
-﻿using static RuleManager.Utils;
+﻿using static RuleDConversion.Utils;
 
-namespace RuleManager;
+namespace RuleDConversion;
 public partial class FrmScripts : Form
 {
     static string OracleConnString;

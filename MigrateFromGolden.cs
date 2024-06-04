@@ -1,7 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Types;
-using static RuleManager.Utils;
+using static RuleDConversion.Utils;
 
-namespace RuleManager;
+namespace RuleDConversion;
 
 internal static class MigrateFromGolden
 {
@@ -28,10 +28,8 @@ internal static class MigrateFromGolden
 
         OracleCommand oraCmd = new()
         {
-            Connection = oraConn
-        };
-
-        oraCmd.CommandText = @"SELECT s.F_STREAM_ID, COUNT(*) AS CONVERTED
+            Connection = oraConn,
+            CommandText = @"SELECT s.F_STREAM_ID, COUNT(*) AS CONVERTED
                                 FROM T_D_RULES_GOLDEN d, T_GROUP_MEMBERS_GOLDEN m, T_RULE_STREAM_MEMBERS_GOLDEN s,T_D_RULES d1
                                 WHERE d.F_RULE_NUMBER = m.F_RULE_NUMBER
                                 AND d.F_RULE_NUMBER = d1.F_RULE_NUMBER
@@ -40,7 +38,8 @@ internal static class MigrateFromGolden
                                 AND m.F_GROUP_ID = s.F_GROUP_ID
                                 AND s.F_STREAM_ID IN(86,74,104,101,89,93,108,90,107,92,94,97,95,96,102,106,103,98,75,83,84,99,105,109,121,115,100,111,87,91,117)
                                 GROUP BY s.F_STREAM_ID
-                                ORDER BY 1";
+                                ORDER BY 1"
+        };
         oraConn.Open();
         OracleDataReader oraRdr = oraCmd.ExecuteReader();
 
@@ -228,10 +227,9 @@ internal static class MigrateFromGolden
 
         OracleCommand oraCmd = new()
         {
-            Connection = oraConn
+            Connection = oraConn,
+            CommandText = "ALTER TRIGGER T_RULE_GROUPS_TRIG DISABLE"
         };
-
-        oraCmd.CommandText = "ALTER TRIGGER T_RULE_GROUPS_TRIG DISABLE";
         oraConn.Open();
         oraCmd.ExecuteNonQuery();
         oraConn.Close();
@@ -311,22 +309,18 @@ internal static class MigrateFromGolden
 
     internal static bool RebuildStreamsAndGroups()
     {
-        bool ok = false;
-
         int x;
 
         OracleCommand oraDelCmd = new()
         {
-            Connection = oraConn
+            Connection = oraConn,
+            CommandText = "DELETE FROM T_GROUP_MEMBERS"
         };
-
-        oraDelCmd.CommandText = "DELETE FROM T_GROUP_MEMBERS";
         oraConn.Open();
         x = oraDelCmd.ExecuteNonQuery();
         oraConn.Close();
 
-        ok = (x > 0);
-
+        bool ok = x > 0;
         if (ok)
         {
             oraDelCmd.CommandText = "DELETE FROM T_RULE_GROUPS";
@@ -462,10 +456,9 @@ internal static class MigrateFromGolden
 
         OracleCommand oraCmd = new()
         {
-            Connection = oraConn
+            Connection = oraConn,
+            CommandText = "DELETE FROM T_RULES_GOLDEN"
         };
-
-        oraCmd.CommandText = "DELETE FROM T_RULES_GOLDEN";
         oraConn.Open();
         oraCmd.ExecuteNonQuery();
         oraConn.Close();
