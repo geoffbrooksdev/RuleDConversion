@@ -26,7 +26,7 @@ public partial class frmMain : Form
 
     private void FrmMain_Load(object sender, EventArgs e)
     {
-        FrmScripts newMDIChild = new()
+        FrmTests newMDIChild = new()
         {
             MdiParent = this
         };

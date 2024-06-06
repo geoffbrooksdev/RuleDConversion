@@ -29,7 +29,7 @@ public partial class FrmStreamMemberUpdaate : Form
     {
         string queryToRun = Utils.ModifyForRun(txtOracle.Text);
         int ruleNumber = int.Parse(txtRuleNumber.Text);
-        txtResults.Text = DataUtils.ExecuteTest(queryToRun, ruleNumber, OracleConnString);
+        txtResults.Text = DataUtils.ExecuteTest("@",queryToRun,ruleNumber,OracleConnString);
     }
 
     void BtnSave_Click(object sender, EventArgs e)
@@ -246,7 +246,7 @@ public partial class FrmStreamMemberUpdaate : Form
     {
         string queryToRun = Utils.ModifyForRun(txtGoldenCalc.Text);
         int ruleNumber = int.Parse(txtRuleNumber.Text);
-        txtResults.Text = "SQL Server version tested: " + DataUtils.ExecuteTest(queryToRun, ruleNumber, OracleConnString);
+        txtResults.Text = "SQL Server version tested: " + DataUtils.ExecuteTest("@",queryToRun,ruleNumber,OracleConnString);
     }
 
     private void ChkConvertOnly_CheckedChanged(object sender, EventArgs e)

@@ -33,11 +33,12 @@
             txtRuleResults = new TextBox();
             lblCountMessage = new Label();
             groupBox3 = new GroupBox();
+            btnRunTests = new Button();
             lblStatus = new Label();
             txtProduct = new TextBox();
             label1 = new Label();
             btnCopyFromGolden = new Button();
-            btnRunTests = new Button();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // label9
@@ -58,6 +59,7 @@
             ddStreams.Name = "ddStreams";
             ddStreams.Size = new Size(250, 23);
             ddStreams.TabIndex = 44;
+            ddStreams.SelectedIndexChanged += DDStreams_SelectedIndexChanged;
             // 
             // txtRuleResults
             // 
@@ -82,6 +84,7 @@
             // groupBox3
             // 
             groupBox3.BackColor = SystemColors.Control;
+            groupBox3.Controls.Add(btnRunTests);
             groupBox3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             groupBox3.Location = new Point(1002, 32);
             groupBox3.Name = "groupBox3";
@@ -89,6 +92,18 @@
             groupBox3.TabIndex = 49;
             groupBox3.TabStop = false;
             groupBox3.Text = "Region Testing";
+            // 
+            // btnRunTests
+            // 
+            btnRunTests.BackColor = SystemColors.ButtonFace;
+            btnRunTests.Font = new Font("Segoe UI", 12F);
+            btnRunTests.Location = new Point(320, 43);
+            btnRunTests.Name = "btnRunTests";
+            btnRunTests.Size = new Size(203, 37);
+            btnRunTests.TabIndex = 54;
+            btnRunTests.Text = "Run Tests";
+            btnRunTests.UseVisualStyleBackColor = false;
+            btnRunTests.Click += BtnRunTests_Click;
             // 
             // lblStatus
             // 
@@ -130,23 +145,11 @@
             btnCopyFromGolden.UseVisualStyleBackColor = false;
             btnCopyFromGolden.Click += BtnCopyFromGolden_Click;
             // 
-            // btnRunTests
-            // 
-            btnRunTests.BackColor = SystemColors.ButtonFace;
-            btnRunTests.Font = new Font("Segoe UI", 12F);
-            btnRunTests.Location = new Point(589, 182);
-            btnRunTests.Name = "btnRunTests";
-            btnRunTests.Size = new Size(203, 37);
-            btnRunTests.TabIndex = 54;
-            btnRunTests.Text = "Run Tests";
-            btnRunTests.UseVisualStyleBackColor = false;
-            // 
             // FrmTests
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1751, 823);
-            Controls.Add(btnRunTests);
             Controls.Add(btnCopyFromGolden);
             Controls.Add(label1);
             Controls.Add(txtProduct);
@@ -161,6 +164,7 @@
             Text = "Testing for Product";
             WindowState = FormWindowState.Maximized;
             Load += FrmScripts_Load;
+            groupBox3.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }

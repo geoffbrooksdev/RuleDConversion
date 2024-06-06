@@ -5,7 +5,7 @@ namespace RuleDConversion;
 
 internal static class DataUtils
 {
-    internal static string ExecuteTest(string queryToRun, int ruleNumber, string OracleConnString)
+    internal static string ExecuteTest(string productid, string queryToRun, int ruleNumber, string OracleConnString)
     {
         string ret;       
 
@@ -25,6 +25,8 @@ internal static class DataUtils
 
         try
         {
+            queryToRun = queryToRun.Replace("'@'", $"'{productid}'");
+
             if (queryToRun.StartsWith("UD_", StringComparison.CurrentCultureIgnoreCase) && !queryToRun.StartsWith("UD_RUNSQLD", StringComparison.CurrentCultureIgnoreCase))
             {               
                 ret = $" {ruleNumber} is a UD function and can't be tested";

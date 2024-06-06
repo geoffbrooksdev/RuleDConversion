@@ -148,7 +148,7 @@ public partial class FrmSingleUpdate : Form
         txtResults.Text = "";
         string queryToRun = Utils.ModifyForRun(txtOraSyntax.Text);
         int ruleNumber = int.Parse(txtRuleNumber.Text);
-        txtResults.Text = DataUtils.ExecuteTest(queryToRun, ruleNumber, OracleConnString);
+        txtResults.Text = DataUtils.ExecuteTest("@",queryToRun, ruleNumber, OracleConnString);
     }
 
     private void BtnSave_Click(object sender, EventArgs e)
@@ -201,12 +201,12 @@ public partial class FrmSingleUpdate : Form
         }
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private void Button1_Click(object sender, EventArgs e)
     {
         txtResults.Text = "";
         string queryToRun = Utils.ModifyForRun(txtGoldenCalc.Text);
         int ruleNumber = int.Parse(txtRuleNumber.Text);
-        txtResults.Text = DataUtils.ExecuteTest(queryToRun, ruleNumber, OracleConnString);
+        txtResults.Text = DataUtils.ExecuteTest("@",queryToRun, ruleNumber, OracleConnString);
     }
 
     void ClearControls()

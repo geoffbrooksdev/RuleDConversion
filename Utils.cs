@@ -8,7 +8,7 @@ internal static class Utils
             if (queryToRun.StartsWith("UD_RUNSQLD('"))
             {
                 queryToRun = queryToRun.Replace("UD_RUNSQLD('", "");
-                queryToRun = queryToRun.Substring(0, queryToRun.Length - 2).Trim();
+                queryToRun = queryToRun[..^2].Trim();
             }
         }
 
@@ -27,68 +27,21 @@ internal static class Utils
 
     internal static OracleConnectionStringBuilder GetOracleConnection()
     {
-
-        //Golden
-        //return new()
-        //{
-        //	DataSource = "USENKLBUS010D.global.ul.com:1521/CELLSIGNAL",
-        //	UserID = "WERCS",
-        //	Password = "Thewercs1"    //CUST4 = "MPtotvEo#862" 
-        //};
-
         //Golden
         return new()
         {
-
             DataSource = "STUDCONT-DB:1521/STUDCONT",
             UserID = "WERCS",
             Password = "TYtxtvEm#092"    //CUST4 = "MPtotvEo#862"  
         };
 
-        //Ungerer
+
+        //CS
         //return new()
         //{
-        //	DataSource = "USENKLBUS010D.global.ul.com:1521/ORA12BCUST4.global.ul.com",
-        //	UserID = "WERCS",
-        //	Password = "MPtotvEo#862"    //CUST4 = "MPtotvEo#862" , CUST6=	 "TYtxtvEm#092"
-        //};
-    }
-
-
-    internal static OracleConnectionStringBuilder GetCSOracleConnection()
-    {
-
-        //Golden
-        //return new()
-        //{
-        //	DataSource = "USENKLBUS010D.global.ul.com:1521/CELLSIGNAL",
-        //	UserID = "WERCS",
-        //	Password = "Thewercs1"    //CUST4 = "MPtotvEo#862" 
-        //};
-
-
-        return new()
-        {
-            DataSource = "STUDCS-db.global.ul.com:1521/STUDCS",
-            UserID = "WERCS",
-            Password = "TheWercs1"    //CUST4 = "MPtotvEo#862"  
-        };
-
-        ////Golden
-        //return new()
-        //{
-
-        //    DataSource = "STUDCONT-DB:1521/STUDCONT",
+        //    DataSource = "STUDCS-db.global.ul.com:1521/STUDCS",
         //    UserID = "WERCS",
-        //    Password = "TYtxtvEm#092"    //CUST4 = "MPtotvEo#862"  
-        //};
-
-        //Ungerer
-        //return new()
-        //{
-        //	DataSource = "USENKLBUS010D.global.ul.com:1521/ORA12BCUST4.global.ul.com",
-        //	UserID = "WERCS",
-        //	Password = "MPtotvEo#862"    //CUST4 = "MPtotvEo#862" , CUST6=	 "TYtxtvEm#092"
+        //    Password = "TheWercs1"    //CUST4 = "MPtotvEo#862"  
         //};
     }
 

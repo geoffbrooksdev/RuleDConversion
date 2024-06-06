@@ -287,7 +287,7 @@ partial class FrmSingleUpdate
         button1.TabIndex = 39;
         button1.Text = "Test on Oracle";
         button1.UseVisualStyleBackColor = true;
-        button1.Click += button1_Click;
+        button1.Click += Button1_Click;
         // 
         // FrmSingleUpdate
         // 

@@ -136,7 +136,7 @@ public partial class FrmScripts : Form
         cmd.Parameters.Add("SID", OracleDbType.Int32);
         cmd.Parameters[0].Value = Convert.ToInt32(stream.Id);
 
-        OracleConnectionStringBuilder ocsbCS = Utils.GetCSOracleConnection();
+        OracleConnectionStringBuilder ocsbCS = Utils.GetOracleConnection();
 
         connCont.Open();
         OracleDataReader dr = cmd.ExecuteReader();
@@ -154,7 +154,7 @@ public partial class FrmScripts : Form
 
             int ruleNumber = dr["F_RULE_NUMBER"] as int? ?? 0;
 
-            string execResult = DataUtils.ExecuteTest(queryToRun, ruleNumber, ocsbCS.ConnectionString);
+            string execResult = DataUtils.ExecuteTest("@", queryToRun, ruleNumber, ocsbCS.ConnectionString);
 
             txtRuleResults.Text += $"# {ruleNumber} :: {execResult}{Environment.NewLine}";
             txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
