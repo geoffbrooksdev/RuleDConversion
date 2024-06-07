@@ -5,7 +5,7 @@ namespace RuleDConversion;
 
 internal static class DataUtils
 {
-    internal static string ExecuteTest(string productid, string queryToRun, int ruleNumber, string OracleConnString)
+    internal static string ExecuteTest(string productid, string queryToRun, int ruleNumber, string OracleConnString, bool doCommit = false)
     {
         string ret;       
 
@@ -41,7 +41,7 @@ internal static class DataUtils
                 cmd.Dispose();
                 conn.Dispose();
 
-                ret = $" {ruleNumber} tests Ok!";
+                ret = $" Ok";
             }
             else if (queryToRun.StartsWith("INSERT", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -51,11 +51,18 @@ internal static class DataUtils
                 cmd.Transaction = trans;
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                trans.Rollback();
+                if (doCommit)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }                
                 cmd.Dispose();
                 conn.Dispose();
 
-                ret = $" {ruleNumber} tests Ok!";
+                ret = $" Ok";
             }
             else if (queryToRun.StartsWith("UPDATE", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -65,11 +72,18 @@ internal static class DataUtils
                 cmd.Transaction = trans;
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                trans.Rollback();
+                if (doCommit)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
                 cmd.Dispose();
                 conn.Dispose();
 
-                ret = $" {ruleNumber} tests Ok!";
+                ret = $" Ok";
             }
             else if (queryToRun.StartsWith("DELETE", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -79,11 +93,18 @@ internal static class DataUtils
                 cmd.Transaction = trans;
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                trans.Rollback();
+                if (doCommit)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
                 cmd.Dispose();
                 conn.Dispose();
-
-                ret = $" {ruleNumber} tests Ok!";
+                        
+                ret = $" Ok";
             }
             else
             {
@@ -94,11 +115,18 @@ internal static class DataUtils
                 cmd.Prepare();
                 cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
-                trans.Rollback();
+                if (doCommit)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
                 cmd.Dispose();
                 conn.Dispose();
 
-                ret = $" {ruleNumber} tests Ok!";
+                ret = $" Ok";
             }
         }
         catch (Exception ex)
