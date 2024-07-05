@@ -114,10 +114,10 @@ internal static class MigrateFromGolden
 
     static MigrateFromGolden()
     {
-        SqlConnectionStringBuilder sscb = Utils.GetSqlServerConnection();
+        SqlConnectionStringBuilder sscb = Utils.GetSqlServerConnectionSB();
         SqlConnString = sscb.ConnectionString;
 
-        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
         OracleConnString = ocsb.ConnectionString;
 
         oraConn = new()

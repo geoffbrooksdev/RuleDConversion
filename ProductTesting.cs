@@ -2,9 +2,6 @@
 
 internal static class ProductTesting
 {
-    //internal static string OracleConnString;
-    //internal static string SqlConnString;
-
     internal static SqlConnection sqlConn = new();
     internal static OracleConnection oraConn = new();
 
@@ -13,16 +10,15 @@ internal static class ProductTesting
 
 
     static ProductTesting()
-    {
-        SqlConnectionStringBuilder sscb = Utils.GetSqlServerConnection();
-
-        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnection();
+    {      
+        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
 
         oraConn = new()
         {
             ConnectionString = ocsb.ConnectionString
         };
 
+        SqlConnectionStringBuilder sscb = Utils.GetSqlServerConnectionSB();
         sqlConn = new()
         {
             ConnectionString = sscb.ConnectionString
@@ -76,12 +72,13 @@ internal static class ProductTesting
             oraConn.Close();
 
             oraTarget.Parameters.Clear();
-            oraTarget.CommandText = @"INSERT INTO T_PROD_TEXT (F_PRODUCT, F_FORMAT, F_DATA_CODE, F_TEXT_CODE)
-                            VALUES (:PID,:FMT,:DC,:TC)";
+            oraTarget.CommandText = @"INSERT INTO T_PROD_TEXT (F_PRODUCT, F_FORMAT, F_DATA_CODE, F_TEXT_CODE, F_USER_UPDATED)
+                            VALUES (:PID,:FMT,:DC,:TC, :UU)";
             oraTarget.Parameters.Add("PID", OracleDbType.Varchar2, 100);
             oraTarget.Parameters.Add("FMT", OracleDbType.Varchar2, 3);
             oraTarget.Parameters.Add("DC", OracleDbType.Varchar2, 8);
             oraTarget.Parameters.Add("TC", OracleDbType.Varchar2, 8);
+            oraTarget.Parameters.Add("UU", OracleDbType.Varchar2, 15);
 
             string sql = @"SELECT * FROM T_PROD_TEXT WHERE F_PRODUCT = @PID";
 
@@ -95,11 +92,13 @@ internal static class ProductTesting
                 string format = reader["F_FORMAT"] as string;
                 string datacode = reader["F_DATA_CODE"] as string;
                 string textcode = reader["F_TEXT_CODE"] as string;
+                string user = reader["F_USER_UPDATED"] as string;
 
                 oraTarget.Parameters["PID"].Value = productid;
                 oraTarget.Parameters["FMT"].Value = format;
                 oraTarget.Parameters["DC"].Value = datacode;
                 oraTarget.Parameters["TC"].Value = textcode;
+                oraTarget.Parameters["UU"].Value = user;
 
                 oraConn.Open();
                 oraTarget.ExecuteNonQuery();
@@ -133,11 +132,12 @@ internal static class ProductTesting
             oraConn.Close();
 
             oraTarget.Parameters.Clear();
-            oraTarget.CommandText = @"INSERT INTO T_PROD_DATA (F_PRODUCT, F_DATA_CODE, F_DATA)
-                            VALUES (:PID,:DC,:DAT)";
+            oraTarget.CommandText = @"INSERT INTO T_PROD_DATA (F_PRODUCT, F_DATA_CODE, F_DATA,F_USER_UPDATED)
+                            VALUES (:PID,:DC,:DAT,:UU)";
             oraTarget.Parameters.Add("PID", OracleDbType.Varchar2, 100);
             oraTarget.Parameters.Add("DC", OracleDbType.Varchar2, 8);
             oraTarget.Parameters.Add("DAT", OracleDbType.Varchar2, 2000);
+            oraTarget.Parameters.Add("UU", OracleDbType.Varchar2, 15);
 
             string sql = @"SELECT * FROM T_PROD_DATA WHERE F_PRODUCT = @PID";
 
@@ -150,10 +150,12 @@ internal static class ProductTesting
             {
                 string datacode = reader["F_DATA_CODE"] as string;
                 string data = reader["F_DATA"] as string;
+                string user = reader["F_USER_UPDATED"] as string;
 
                 oraTarget.Parameters["PID"].Value = productid;
                 oraTarget.Parameters["DC"].Value = datacode;
                 oraTarget.Parameters["DAT"].Value = data;
+                oraTarget.Parameters["UU"].Value = user;
 
                 oraConn.Open();
                 oraTarget.ExecuteNonQuery();
@@ -647,6 +649,8 @@ internal static class ProductTesting
 
                 AddComponentToFormula(productid, cas, compid, chemname, tsname, percent, percentrange, units, hazflag, tsflag);
 
+                AddPrintFlags(productid, cas, compid);
+
                 AddComponentRelatedData(cas, compid);
             }
             reader.Close();
@@ -654,6 +658,77 @@ internal static class ProductTesting
 
             ok = true;
 
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        return ok;
+    }
+
+    static bool AddPrintFlags(string prodid, string cas, string compid)
+    {
+        bool ok = false;
+
+        SqlConnection sqlConn2 = new()
+        {
+            ConnectionString = sqlConn.ConnectionString
+        };
+
+        try
+        {
+            oraTarget.Parameters.Clear();
+            oraTarget.CommandText = "DELETE FROM T_PRINT_FLAGS WHERE F_PRODUCT = :PID AND F_CAS_NUMBER = :CAS AND F_COMPONENT_ID = :COMP";
+            oraTarget.Parameters.Add("PID", OracleDbType.Varchar2, 50).Value = prodid;
+            oraTarget.Parameters.Add("CAS", OracleDbType.Varchar2, 15).Value = cas;
+            oraTarget.Parameters.Add("COMP", OracleDbType.Varchar2, 35).Value = compid;
+            oraConn.Open();
+            oraTarget.ExecuteNonQuery();
+            oraConn.Close();
+
+
+            oraTarget.Parameters.Clear();
+            oraTarget.CommandText = @"INSERT INTO T_PRINT_FLAGS (F_PRODUCT, F_CAS_NUMBER, F_COMPONENT_ID, F_FORMAT, F_PRINT_FLAG, F_SUBFORMAT)
+                            VALUES (:PID,:CAS,:COMP,:FMT,:PF,:SF)";
+
+            oraTarget.Parameters.Add("PID", OracleDbType.Varchar2, 50);
+            oraTarget.Parameters.Add("CAS", OracleDbType.Varchar2, 15);
+            oraTarget.Parameters.Add("COMP", OracleDbType.Varchar2, 35);
+            oraTarget.Parameters.Add("FMT", OracleDbType.Varchar2, 3);
+            oraTarget.Parameters.Add("PF", OracleDbType.Byte,2);
+            oraTarget.Parameters.Add("SF", OracleDbType.Varchar2, 4);
+
+            string sql = @"SELECT * FROM T_PRINT_FLAGS WHERE F_PRODUCT = @PID AND F_CAS_NUMBER = @CAS AND F_COMPONENT_ID = @COMP";
+
+            SqlCommand sqlCmd = new(sql, sqlConn2);
+            sqlCmd.Parameters.Add("PID", SqlDbType.VarChar, 50).Value = prodid;
+            sqlCmd.Parameters.Add("CAS", SqlDbType.VarChar, 15).Value = cas;
+            sqlCmd.Parameters.Add("COMP", SqlDbType.VarChar, 35).Value = compid;
+
+            sqlConn2.Open();
+            SqlDataReader reader = sqlCmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string format = reader["F_FORMAT"] as string;
+                string subformat = reader["F_SUBFORMAT"] as string;
+                bool printflag = reader["F_PRINT_FLAG"] as bool? ?? false;
+
+                oraTarget.Parameters["PID"].Value = prodid;
+                oraTarget.Parameters["CAS"].Value = cas;
+                oraTarget.Parameters["COMP"].Value = compid;
+                oraTarget.Parameters["FMT"].Value = format;
+                oraTarget.Parameters["PF"].Value = printflag;
+                oraTarget.Parameters["SF"].Value = subformat;
+
+                oraConn.Open();
+                oraTarget.ExecuteNonQuery();
+                oraConn.Close();
+            }
+            reader.Close();
+            sqlConn2.Close();
+
+            ok = true;
         }
         catch (Exception ex)
         {

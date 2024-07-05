@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Data.SqlClient;
+using System.IO;
 using static RuleDConversion.Utils;
 
 namespace RuleDConversion;
@@ -44,6 +45,7 @@ public partial class FrmTests : Form
 
         txtRuleResults.Text = $"Testing RuleStream {stream.Name} {Environment.NewLine}";
         txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
+        txtCompareResults.Text = "";
         lblCountMessage.Text = "";
 
         lblStatus.Text = $"Running rules for {stream.Name}";
@@ -54,18 +56,16 @@ public partial class FrmTests : Form
         int execCount = 0;
         int ruleCount = streams.FirstOrDefault(s => s.Id == stream.Id).Total;
 
-        OracleConnectionStringBuilder ocsbCont = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsbCont = Utils.GetOracleConnectionSB();       
 
-        string OracleConnStringCont = ocsbCont.ConnectionString;
-
-        OracleConnection connCont = new()
+        OracleConnection conn = new()
         {
-            ConnectionString = OracleConnStringCont
+            ConnectionString = ocsbCont.ConnectionString
         };
 
         OracleCommand cmd = new()
         {
-            Connection = connCont,
+            Connection = conn,
             CommandText = @"SELECT d.F_RULE_NUMBER, r.F_RULE_NAME, d.F_CALC_ORA, d.F_CALC
 								FROM T_D_RULES d
 								JOIN T_GROUP_MEMBERS m ON m.F_RULE_NUMBER = d.F_RULE_NUMBER
@@ -78,9 +78,7 @@ public partial class FrmTests : Form
         cmd.Parameters.Add("SID", OracleDbType.Int32);
         cmd.Parameters[0].Value = Convert.ToInt32(stream.Id);
 
-        OracleConnectionStringBuilder ocsbCS = Utils.GetOracleConnection();
-
-        connCont.Open();
+        conn.Open();
         OracleDataReader dr = cmd.ExecuteReader();
         while (dr.Read())
         {
@@ -96,10 +94,16 @@ public partial class FrmTests : Form
 
             int ruleNumber = dr["F_RULE_NUMBER"] as int? ?? 0;
 
-            string execResult = DataUtils.ExecuteTest(productId, queryToRun, ruleNumber, ocsbCS.ConnectionString, true);
+            string execResult = DataUtils.ExecuteTest(productId, queryToRun, ruleNumber, ocsbCont.ConnectionString, true);
 
             txtRuleResults.Text += $"# {ruleNumber} :: {execResult}{Environment.NewLine}";
             txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
+
+            SqlConnectionStringBuilder sscb = Utils.GetSqlServerConnectionSB();
+          
+            string compareResults = DataUtils.CompareTestResults(productId, ruleNumber, ocsbCont.ConnectionString, sscb.ConnectionString);
+            txtCompareResults.Text += compareResults;
+            txtCompareResults.Text += $"-------------------------------- {Environment.NewLine}";
 
             execCount++;
             if (execResult.StartsWith("Exception"))
@@ -111,7 +115,7 @@ public partial class FrmTests : Form
         }
 
         dr.Close();
-        connCont.Close();
+        conn.Close();
 
         txtRuleResults.Text += $"Finished {Environment.NewLine}";
         txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
@@ -143,7 +147,7 @@ public partial class FrmTests : Form
            
             ruleCount += streams.FirstOrDefault(s => s.Id == stream.Id).Total;
 
-            OracleConnectionStringBuilder ocsbCont = Utils.GetOracleConnection();
+            OracleConnectionStringBuilder ocsbCont = Utils.GetOracleConnectionSB();
 
             string OracleConnStringCont = ocsbCont.ConnectionString;
 
@@ -167,7 +171,7 @@ public partial class FrmTests : Form
             cmd.Parameters.Add("SID", OracleDbType.Int32);
             cmd.Parameters[0].Value = Convert.ToInt32(stream.Id);
 
-            OracleConnectionStringBuilder ocsbCS = Utils.GetOracleConnection();
+            OracleConnectionStringBuilder ocsbCS = Utils.GetOracleConnectionSB();
 
             connCont.Open();
             OracleDataReader dr = cmd.ExecuteReader();

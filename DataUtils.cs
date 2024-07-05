@@ -7,14 +7,12 @@ internal static class DataUtils
 {
     internal static string ExecuteTest(string productid, string queryToRun, int ruleNumber, string OracleConnString, bool doCommit = false)
     {
-        string ret;       
+        string ret;
 
         OracleConnection conn = new()
         {
             ConnectionString = OracleConnString
         };
-
-        conn.Open();
 
         OracleCommand cmd = new()
         {
@@ -25,26 +23,35 @@ internal static class DataUtils
 
         try
         {
+            if (doCommit)
+            {
+                ClearRuleResults(productid, ruleNumber, conn);
+            }
+
             queryToRun = queryToRun.Replace("'@'", $"'{productid}'");
+            queryToRun = queryToRun.Replace("'RW-@RULEID'", $"'RW-{ruleNumber}'");
 
             if (queryToRun.StartsWith("UD_", StringComparison.CurrentCultureIgnoreCase) && !queryToRun.StartsWith("UD_RUNSQLD", StringComparison.CurrentCultureIgnoreCase))
-            {               
+            {
                 ret = $" {ruleNumber} is a UD function and can't be tested";
                 return ret;
             }
 
             if (queryToRun.StartsWith("SELECT", StringComparison.CurrentCultureIgnoreCase))
             {
+                conn.Open();
                 OracleDataReader dr = cmd.ExecuteReader();
                 dr.Read();
                 dr.Close();
                 cmd.Dispose();
+                conn.Close();
                 conn.Dispose();
 
                 ret = $" Ok";
             }
             else if (queryToRun.StartsWith("INSERT", StringComparison.CurrentCultureIgnoreCase))
             {
+                conn.Open();
                 OracleTransaction trans;
 
                 trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
@@ -58,14 +65,16 @@ internal static class DataUtils
                 else
                 {
                     trans.Rollback();
-                }                
+                }
                 cmd.Dispose();
+                conn.Close();
                 conn.Dispose();
 
                 ret = $" Ok";
             }
             else if (queryToRun.StartsWith("UPDATE", StringComparison.CurrentCultureIgnoreCase))
             {
+                conn.Open();
                 OracleTransaction trans;
 
                 trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
@@ -82,11 +91,13 @@ internal static class DataUtils
                 }
                 cmd.Dispose();
                 conn.Dispose();
+                conn.Close();
 
                 ret = $" Ok";
             }
             else if (queryToRun.StartsWith("DELETE", StringComparison.CurrentCultureIgnoreCase))
             {
+                conn.Open();
                 OracleTransaction trans;
 
                 trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
@@ -102,12 +113,62 @@ internal static class DataUtils
                     trans.Rollback();
                 }
                 cmd.Dispose();
+                conn.Close();
                 conn.Dispose();
-                        
+
+                ret = $" Ok";
+            }
+            else if (queryToRun.StartsWith("DECLARE", StringComparison.CurrentCultureIgnoreCase))
+            {
+                conn.Open();
+                OracleTransaction trans;
+
+                cmd.CommandType = CommandType.Text;
+
+                trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+                cmd.Transaction = trans;                
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                if (doCommit)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
+                cmd.Dispose();
+                conn.Close();
+                conn.Dispose();
+                ret = $" Ok";
+            }
+            else if (queryToRun.StartsWith("BEGIN", StringComparison.CurrentCultureIgnoreCase))
+            {
+                conn.Open();
+                OracleTransaction trans;
+
+                cmd.CommandType = CommandType.Text;
+
+                trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+                cmd.Transaction = trans;
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                if (doCommit)
+                {
+                    trans.Commit();
+                }
+                else
+                {
+                    trans.Rollback();
+                }
+                cmd.Dispose();
+                conn.Close();
+                conn.Dispose();
                 ret = $" Ok";
             }
             else
             {
+                conn.Open();
                 OracleTransaction trans;
 
                 trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
@@ -124,6 +185,7 @@ internal static class DataUtils
                     trans.Rollback();
                 }
                 cmd.Dispose();
+                conn.Close();
                 conn.Dispose();
 
                 ret = $" Ok";
@@ -142,6 +204,110 @@ internal static class DataUtils
         }
 
         return ret;
+    }
+
+    internal static string CompareTestResults(string productid, int ruleNumber, string OraConnString, string SQLConnString)
+    {
+        string result = $"#{ruleNumber} - No SQL records found{Environment.NewLine}";
+
+        try
+        {
+            OracleConnection OraConn = new()
+            {
+                ConnectionString = OraConnString
+            };
+
+            SqlConnection SqlConn = new()
+            {
+                ConnectionString = SQLConnString
+            };
+
+            string sql = $"SELECT COUNT(*) FROM T_PROD_TEXT WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED = 'RW-{ruleNumber}'";
+
+            OracleCommand oraCmd = new()
+            {
+                Connection = OraConn,
+                CommandText = sql
+            };
+
+            SqlCommand sqlCmd = new()
+            {
+                Connection = SqlConn,
+                CommandText = sql
+            };
+
+            OraConn.Open();
+            int oraptCount = Convert.ToInt16(oraCmd.ExecuteScalar());
+            OraConn.Close();
+
+            SqlConn.Open();
+            int sqlptCount = Convert.ToInt16(sqlCmd.ExecuteScalar());
+            SqlConn.Close();
+
+            if (sqlptCount > 0)
+            {
+                result = $"Result for #{ruleNumber}{Environment.NewLine}Prod Text OK? : {oraptCount == sqlptCount} Oracle count: {oraptCount}, SQL Count {sqlptCount}{Environment.NewLine}";
+            }
+
+            //---------------------------------------------------------------------------------------------------------------------------------------------------
+
+            string pdsql = $"SELECT COUNT(*) FROM T_PROD_DATA WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED = 'RW-{ruleNumber}'";
+
+            oraCmd.CommandText = pdsql;
+            sqlCmd.CommandText = pdsql;
+
+            OraConn.Open();
+            int orapdCount = Convert.ToInt16(oraCmd.ExecuteScalar());
+            OraConn.Close();
+
+            SqlConn.Open();
+            int sqlpdCount = Convert.ToInt16(sqlCmd.ExecuteScalar());
+            SqlConn.Close();
+
+            if (sqlpdCount > 0)
+            {
+                result += $"Result for #{ruleNumber}{Environment.NewLine}Prod Data OK? : {orapdCount == sqlpdCount} Oracle count: {orapdCount}, SQL Count {sqlpdCount}{Environment.NewLine}";
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.Write(ex.ToString());
+        }
+
+        return result;
+    }
+
+    internal static bool ClearRuleResults(string productid, int ruleNumber, OracleConnection OraConn)
+    {
+        bool result = true;
+        try
+        {
+            OracleCommand oraPTCmd = new()
+            {
+                Connection = OraConn,
+                CommandText = $"DELETE FROM T_PROD_TEXT WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED = 'RW-{ruleNumber}'"
+            };
+
+            OracleCommand oraPDCmd = new()
+            {
+                Connection = OraConn,
+                CommandText = $"DELETE FROM T_PROD_DATA WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED = 'RW-{ruleNumber}'"
+            };
+
+            OraConn.Open();
+            oraPTCmd.ExecuteNonQuery();
+            oraPDCmd.ExecuteNonQuery();
+            OraConn.Close();
+
+        }
+        catch (Exception ex)
+        {
+            Console.Write(ex.ToString());
+            result = false;
+        }
+
+        return result;
     }
 
     internal static string SaveChanges(bool updateCalc, string currentSql, string calc, string ruleName, int ruleNumber, string OracleConnString)

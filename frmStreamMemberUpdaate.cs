@@ -13,7 +13,7 @@ public partial class FrmStreamMemberUpdaate : Form
     {
         InitializeComponent();
 
-        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
         Text = ocsb.DataSource;
         OracleConnString = ocsb.ConnectionString;
 

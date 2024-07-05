@@ -7,7 +7,7 @@ public partial class FrmSingleUpdate : Form
     {
         InitializeComponent();
 
-        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
         Text = $"Single Rule Update {ocsb.DataSource}";
         OracleConnString = ocsb.ConnectionString;
     }

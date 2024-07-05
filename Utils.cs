@@ -15,7 +15,7 @@ internal static class Utils
         return queryToRun;
     }
 
-    internal static SqlConnectionStringBuilder GetSqlServerConnection()
+    internal static SqlConnectionStringBuilder GetSqlServerConnectionSB()
     {
         return new()
         {
@@ -25,7 +25,7 @@ internal static class Utils
         };
     }
 
-    internal static OracleConnectionStringBuilder GetOracleConnection()
+    internal static OracleConnectionStringBuilder GetOracleConnectionSB()
     {
         //Golden
         return new()

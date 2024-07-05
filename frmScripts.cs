@@ -28,7 +28,7 @@ public partial class FrmScripts : Form
 
     private void Button1_Click(object sender, EventArgs e)
     {
-        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
         Text = ocsb.DataSource;
         OracleConnString = ocsb.ConnectionString;
 
@@ -112,7 +112,7 @@ public partial class FrmScripts : Form
         int execCount = 0;
         int ruleCount = streams.FirstOrDefault(s => s.Id == stream.Id).Total;
 
-        OracleConnectionStringBuilder ocsbCont = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsbCont = Utils.GetOracleConnectionSB();
 
         string OracleConnStringCont = ocsbCont.ConnectionString;
 
@@ -136,7 +136,7 @@ public partial class FrmScripts : Form
         cmd.Parameters.Add("SID", OracleDbType.Int32);
         cmd.Parameters[0].Value = Convert.ToInt32(stream.Id);
 
-        OracleConnectionStringBuilder ocsbCS = Utils.GetOracleConnection();
+        OracleConnectionStringBuilder ocsbCS = Utils.GetOracleConnectionSB();
 
         connCont.Open();
         OracleDataReader dr = cmd.ExecuteReader();
