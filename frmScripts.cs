@@ -33,12 +33,16 @@ public partial class FrmScripts : Form
         OracleConnString = ocsb.ConnectionString;
 
         lblStatus.Text = $"Connected to {ocsb.DataSource}";
+        lblGenScripts.Text = "Creating script files...";
+        Application.DoEvents();
 
         bool ok = ScriptGenerator.GenerateRegionals(OracleConnString, txtScriptOutputFolder.Text);
 
         if (ok)
         {
             lblStatus.Text = $"Script creation complete. Result {ok}";
+            lblGenScripts.Text = "Finished creating script files...";
+            Application.DoEvents();
         }
     }
 

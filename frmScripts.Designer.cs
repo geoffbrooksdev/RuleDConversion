@@ -41,6 +41,7 @@
             txtRuleResults = new TextBox();
             lblCountMessage = new Label();
             groupBox1 = new GroupBox();
+            lblGenScripts = new Label();
             label2 = new Label();
             label1 = new Label();
             pictureBox1 = new PictureBox();
@@ -186,6 +187,7 @@
             // 
             groupBox1.BackColor = SystemColors.Control;
             groupBox1.CausesValidation = false;
+            groupBox1.Controls.Add(lblGenScripts);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(btnRebuild);
@@ -203,6 +205,16 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Script Actions";
+            // 
+            // lblGenScripts
+            // 
+            lblGenScripts.AutoSize = true;
+            lblGenScripts.BackColor = SystemColors.GradientInactiveCaption;
+            lblGenScripts.Location = new Point(120, 647);
+            lblGenScripts.Name = "lblGenScripts";
+            lblGenScripts.Size = new Size(44, 21);
+            lblGenScripts.TabIndex = 12;
+            lblGenScripts.Text = "Idle...";
             // 
             // label2
             // 
@@ -302,5 +314,6 @@
         private Label label2;
         private Label label1;
         private PictureBox pictureBox1;
+        private Label lblGenScripts;
     }
 }

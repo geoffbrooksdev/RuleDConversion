@@ -77,7 +77,7 @@ partial class FrmSingleUpdate
         txtGoldenCalc.Multiline = true;
         txtGoldenCalc.Name = "txtGoldenCalc";
         txtGoldenCalc.ScrollBars = ScrollBars.Vertical;
-        txtGoldenCalc.Size = new Size(805, 325);
+        txtGoldenCalc.Size = new Size(805, 555);
         txtGoldenCalc.TabIndex = 2;
         // 
         // label2
@@ -203,7 +203,7 @@ partial class FrmSingleUpdate
         // btnConverted
         // 
         btnConverted.Font = new Font("Segoe UI", 12F);
-        btnConverted.Location = new Point(52, 741);
+        btnConverted.Location = new Point(32, 796);
         btnConverted.Name = "btnConverted";
         btnConverted.Size = new Size(154, 33);
         btnConverted.TabIndex = 32;
@@ -215,7 +215,7 @@ partial class FrmSingleUpdate
         // textBox1
         // 
         textBox1.Font = new Font("Segoe UI", 12F);
-        textBox1.Location = new Point(225, 700);
+        textBox1.Location = new Point(189, 772);
         textBox1.Name = "textBox1";
         textBox1.Size = new Size(145, 29);
         textBox1.TabIndex = 33;
@@ -225,7 +225,7 @@ partial class FrmSingleUpdate
         // txtSourceRuleNumber
         // 
         txtSourceRuleNumber.Font = new Font("Segoe UI", 12F);
-        txtSourceRuleNumber.Location = new Point(61, 700);
+        txtSourceRuleNumber.Location = new Point(38, 772);
         txtSourceRuleNumber.Name = "txtSourceRuleNumber";
         txtSourceRuleNumber.Size = new Size(145, 29);
         txtSourceRuleNumber.TabIndex = 34;
@@ -235,7 +235,7 @@ partial class FrmSingleUpdate
         // 
         label7.AutoSize = true;
         label7.Font = new Font("Segoe UI", 12F);
-        label7.Location = new Point(61, 678);
+        label7.Location = new Point(340, 775);
         label7.Name = "label7";
         label7.Size = new Size(106, 21);
         label7.TabIndex = 35;
@@ -245,7 +245,7 @@ partial class FrmSingleUpdate
         // btnGenerate
         // 
         btnGenerate.Font = new Font("Segoe UI", 12F);
-        btnGenerate.Location = new Point(61, 642);
+        btnGenerate.Location = new Point(192, 803);
         btnGenerate.Name = "btnGenerate";
         btnGenerate.Size = new Size(249, 31);
         btnGenerate.TabIndex = 36;
@@ -258,7 +258,7 @@ partial class FrmSingleUpdate
         // 
         label8.AutoSize = true;
         label8.Font = new Font("Segoe UI", 12F);
-        label8.Location = new Point(38, 472);
+        label8.Location = new Point(38, 690);
         label8.Name = "label8";
         label8.Size = new Size(232, 21);
         label8.TabIndex = 37;
@@ -271,7 +271,7 @@ partial class FrmSingleUpdate
         tableRegions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
         tableRegions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
         tableRegions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-        tableRegions.Location = new Point(38, 514);
+        tableRegions.Location = new Point(38, 714);
         tableRegions.Name = "tableRegions";
         tableRegions.RowCount = 1;
         tableRegions.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
@@ -281,7 +281,7 @@ partial class FrmSingleUpdate
         // button1
         // 
         button1.Font = new Font("Segoe UI", 12F);
-        button1.Location = new Point(674, 444);
+        button1.Location = new Point(674, 664);
         button1.Name = "button1";
         button1.Size = new Size(169, 35);
         button1.TabIndex = 39;
