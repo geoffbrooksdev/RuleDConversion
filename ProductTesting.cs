@@ -61,6 +61,7 @@ internal static class ProductTesting
     static bool AddProductText(string productid)
     {
         bool ok = false;
+        int counter = 0;
 
         try
         {
@@ -103,6 +104,7 @@ internal static class ProductTesting
                 oraConn.Open();
                 oraTarget.ExecuteNonQuery();
                 oraConn.Close();
+                counter++;
             }
             reader.Close();
             sqlConn.Close();
@@ -720,10 +722,20 @@ internal static class ProductTesting
                 oraTarget.Parameters["FMT"].Value = format;
                 oraTarget.Parameters["PF"].Value = printflag;
                 oraTarget.Parameters["SF"].Value = subformat;
-
-                oraConn.Open();
-                oraTarget.ExecuteNonQuery();
-                oraConn.Close();
+                try
+                {
+                    oraConn.Open();
+                    oraTarget.ExecuteNonQuery();
+                    oraConn.Close();
+                }
+                catch (Exception ex)
+                {
+                    if (oraConn.State == ConnectionState.Open)
+                    {
+                        oraConn.Close();
+                    }
+                    Console.WriteLine(ex.ToString());
+                }
             }
             reader.Close();
             sqlConn2.Close();
@@ -732,6 +744,10 @@ internal static class ProductTesting
         }
         catch (Exception ex)
         {
+            if (oraConn.State != ConnectionState.Open)
+            {
+                oraConn.Close();
+            }
             Console.WriteLine(ex.ToString());
         }
 

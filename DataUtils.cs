@@ -208,7 +208,7 @@ internal static class DataUtils
 
     internal static string CompareTestResults(string productid, int ruleNumber, string OraConnString, string SQLConnString)
     {
-        string result = $"#{ruleNumber} - No SQL records found{Environment.NewLine}";
+        string result = "";
 
         try
         {
@@ -222,7 +222,7 @@ internal static class DataUtils
                 ConnectionString = SQLConnString
             };
 
-            string sql = $"SELECT COUNT(*) FROM T_PROD_TEXT WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED = 'RW-{ruleNumber}'";
+            string sql = $"SELECT COUNT(*) FROM T_PROD_TEXT WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED IN('RW-{ruleNumber}', 'RULE{ruleNumber}')" ;
 
             OracleCommand oraCmd = new()
             {
@@ -267,6 +267,11 @@ internal static class DataUtils
             if (sqlpdCount > 0)
             {
                 result += $"Result for #{ruleNumber}{Environment.NewLine}Prod Data OK? : {orapdCount == sqlpdCount} Oracle count: {orapdCount}, SQL Count {sqlpdCount}{Environment.NewLine}";
+            }
+
+            if ((sqlpdCount + sqlptCount) == 0)
+            {
+                result= $"#{ruleNumber} - No SQL records found{Environment.NewLine}";
             }
 
         }
