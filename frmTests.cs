@@ -39,15 +39,19 @@ public partial class FrmTests : Form
 
     private void BtnRunTests_Click(object sender, EventArgs e)
     {
+        lblStatus.Text = "Running tests...";
+        lblCompareDiff.Text = "";
+        Application.DoEvents();
+
         string productId = txtProduct.Text;
+        int totaldiff = 0;
 
         RegionalStream stream = (RegionalStream)ddStreams.SelectedItem;
 
         txtRuleResults.Text = $"Testing RuleStream {stream.Name} {Environment.NewLine}";
         txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
-        txtCompareResults.Text = "";
-        lblCountMessage.Text = "";
-
+        txtCompareResults.Text = $"Compare Golden to Oracle (Text and Data) {Environment.NewLine}";
+        txtCompareResults.Text += $"-------------------------------- {Environment.NewLine}";
         lblStatus.Text = $"Running rules for {stream.Name}";
 
         Application.DoEvents();
@@ -102,8 +106,20 @@ public partial class FrmTests : Form
             SqlConnectionStringBuilder sscb = Utils.GetSqlServerConnectionSB();
           
             string compareResults = DataUtils.CompareTestResults(productId, ruleNumber, ocsbCont.ConnectionString, sscb.ConnectionString);
-            txtCompareResults.Text += compareResults;
-            txtCompareResults.Text += $"-------------------------------- {Environment.NewLine}";
+            int diffCount = 0;
+
+            if (!string.IsNullOrEmpty(compareResults))
+            {
+                txtCompareResults.Text += compareResults;
+                txtCompareResults.Text += $"-------------------------------- {Environment.NewLine}";
+                diffCount++;
+            }
+
+            if (diffCount > 0)
+            {
+                totaldiff += diffCount;
+                lblCompareDiff.Text = $"Differences detected: {totaldiff}";
+            }
 
             execCount++;
             if (execResult.StartsWith("Exception"))
@@ -119,11 +135,7 @@ public partial class FrmTests : Form
 
         txtRuleResults.Text += $"Finished {Environment.NewLine}";
         txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
-
-        lblCountMessage.Text = $"Rules in stream {ruleCount}, # Rules tested: {execCount}, Errors: {errorCount}";
-
-        lblStatus.Text = $"Running Rules finished";
-
+        lblStatus.Text = $"Finished: Rules in stream {ruleCount}, # Rules tested: {execCount}, Errors: {errorCount}";
     }
 
     private void BtnRunAllTests_Click(object sender, EventArgs e)
@@ -139,8 +151,6 @@ public partial class FrmTests : Form
         {
             txtRuleResults.Text += $"Testing RuleStream {stream.Name} {Environment.NewLine}";
             txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
-            lblCountMessage.Text = "";
-
             lblStatus.Text = $"Running rules for {stream.Name}";
 
             Application.DoEvents();
@@ -208,18 +218,15 @@ public partial class FrmTests : Form
 
             txtRuleResults.Text += $"Finished {Environment.NewLine}";
             txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
-
-            lblCountMessage.Text = $"Rules in stream {ruleCount}, # Rules tested: {execCount}, Errors: {errorCount}";
+            lblStatus.Text = $"Finished: Rules in stream {ruleCount}, # Rules tested: {execCount}, Errors: {errorCount}";
         }
-
-        lblStatus.Text = $"Running Rules finished";
-
     }
 
     private void DDStreams_SelectedIndexChanged(object sender, EventArgs e)
     {
-        lblCountMessage.Text = "";
         txtRuleResults.Text = "";
-    }
-       
+        lblStatus.Text = "";
+        txtCompareResults.Text = "";
+        lblCompareDiff.Text = "";
+    }       
 }

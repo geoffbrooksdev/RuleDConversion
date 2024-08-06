@@ -30,7 +30,6 @@ partial class frmMain
         menuStrip1 = new MenuStrip();
         rulesToolStripMenuItem = new ToolStripMenuItem();
         scriptsToolStripMenuItem = new ToolStripMenuItem();
-        streamsToolStripMenuItem1 = new ToolStripMenuItem();
         updateToolStripMenuItem = new ToolStripMenuItem();
         productTestsToolStripMenuItem = new ToolStripMenuItem();
         menuStrip1.SuspendLayout();
@@ -47,7 +46,7 @@ partial class frmMain
         // 
         // rulesToolStripMenuItem
         // 
-        rulesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { scriptsToolStripMenuItem, streamsToolStripMenuItem1, updateToolStripMenuItem, productTestsToolStripMenuItem });
+        rulesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { scriptsToolStripMenuItem, updateToolStripMenuItem, productTestsToolStripMenuItem });
         rulesToolStripMenuItem.Name = "rulesToolStripMenuItem";
         rulesToolStripMenuItem.Size = new Size(46, 20);
         rulesToolStripMenuItem.Text = "Tools";
@@ -58,13 +57,6 @@ partial class frmMain
         scriptsToolStripMenuItem.Size = new Size(247, 22);
         scriptsToolStripMenuItem.Text = "Migrate Golden  && Create Scripts";
         scriptsToolStripMenuItem.Click += ScriptsToolStripMenuItem_Click;
-        // 
-        // streamsToolStripMenuItem1
-        // 
-        streamsToolStripMenuItem1.Name = "streamsToolStripMenuItem1";
-        streamsToolStripMenuItem1.Size = new Size(247, 22);
-        streamsToolStripMenuItem1.Text = "Edit Stream Members";
-        streamsToolStripMenuItem1.Click += StreamsToolStripMenuItem1_Click;
         // 
         // updateToolStripMenuItem
         // 
@@ -102,7 +94,6 @@ partial class frmMain
 
     private MenuStrip menuStrip1;
 	private ToolStripMenuItem rulesToolStripMenuItem;
-	private ToolStripMenuItem streamsToolStripMenuItem1;
 	private ToolStripMenuItem scriptsToolStripMenuItem;
     private ToolStripMenuItem updateToolStripMenuItem;
     private ToolStripMenuItem productTestsToolStripMenuItem;

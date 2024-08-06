@@ -222,7 +222,7 @@ internal static class DataUtils
                 ConnectionString = SQLConnString
             };
 
-            string sql = $"SELECT COUNT(*) FROM T_PROD_TEXT WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED IN('RW-{ruleNumber}', 'RULE{ruleNumber}')" ;
+            string sql = $"SELECT COUNT(*) FROM T_PROD_TEXT WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED IN ('RW-{ruleNumber}', 'RULE{ruleNumber}')" ;
 
             OracleCommand oraCmd = new()
             {
@@ -244,14 +244,14 @@ internal static class DataUtils
             int sqlptCount = Convert.ToInt16(sqlCmd.ExecuteScalar());
             SqlConn.Close();
 
-            if (sqlptCount > 0)
+            if (sqlptCount != oraptCount)
             {
-                result = $"Result for #{ruleNumber}{Environment.NewLine}Prod Text OK? : {oraptCount == sqlptCount} Oracle count: {oraptCount}, SQL Count {sqlptCount}{Environment.NewLine}";
+                result = $"Result for #{ruleNumber}{Environment.NewLine} ProdText : Oracle count: {oraptCount}, SQL Count {sqlptCount}{Environment.NewLine}";
             }
 
             //---------------------------------------------------------------------------------------------------------------------------------------------------
 
-            string pdsql = $"SELECT COUNT(*) FROM T_PROD_DATA WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED = 'RW-{ruleNumber}'";
+            string pdsql = $"SELECT COUNT(*) FROM T_PROD_DATA WHERE F_PRODUCT = '{productid}' AND F_USER_UPDATED IN ('RW-{ruleNumber}', 'RULE{ruleNumber}')";
 
             oraCmd.CommandText = pdsql;
             sqlCmd.CommandText = pdsql;
@@ -264,16 +264,10 @@ internal static class DataUtils
             int sqlpdCount = Convert.ToInt16(sqlCmd.ExecuteScalar());
             SqlConn.Close();
 
-            if (sqlpdCount > 0)
+            if (sqlpdCount != orapdCount)
             {
-                result += $"Result for #{ruleNumber}{Environment.NewLine}Prod Data OK? : {orapdCount == sqlpdCount} Oracle count: {orapdCount}, SQL Count {sqlpdCount}{Environment.NewLine}";
-            }
-
-            if ((sqlpdCount + sqlptCount) == 0)
-            {
-                result= $"#{ruleNumber} - No SQL records found{Environment.NewLine}";
-            }
-
+                result += $"Result for #{ruleNumber}{Environment.NewLine}Prod Data: Oracle count: {orapdCount}, SQL Count {sqlpdCount}{Environment.NewLine}";
+            }  
         }
         catch (Exception ex)
         {

@@ -302,7 +302,7 @@ partial class FrmStreamMemberUpdaate
         chkConvertOnly.UseVisualStyleBackColor = true;
         chkConvertOnly.CheckedChanged += ChkConvertOnly_CheckedChanged;
         // 
-        // frmStreamMemberUpdaate
+        // FrmStreamMemberUpdaate
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
@@ -333,10 +333,11 @@ partial class FrmStreamMemberUpdaate
         Controls.Add(btnSave);
         Controls.Add(label1);
         Controls.Add(txtRuleNumber);
-        Name = "frmStreamMemberUpdaate";
+        Name = "FrmStreamMemberUpdaate";
         StartPosition = FormStartPosition.WindowsDefaultBounds;
         Text = "Review/Edit Stream Members";
         WindowState = FormWindowState.Maximized;
+        Load += FrmStreamMemberUpdaate_Load;
         ResumeLayout(false);
         PerformLayout();
     }

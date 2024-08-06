@@ -31,8 +31,8 @@
             label9 = new Label();
             ddStreams = new ComboBox();
             txtRuleResults = new TextBox();
-            lblCountMessage = new Label();
             groupBox3 = new GroupBox();
+            label2 = new Label();
             BtnRunAllTEsts = new Button();
             btnRunTests = new Button();
             lblStatus = new Label();
@@ -41,6 +41,7 @@
             btnCopyFromGolden = new Button();
             txtCompareResults = new TextBox();
             lblCompareResults = new Label();
+            lblCompareDiff = new Label();
             groupBox3.SuspendLayout();
             SuspendLayout();
             // 
@@ -49,7 +50,7 @@
             label9.AutoSize = true;
             label9.BackColor = SystemColors.Control;
             label9.Font = new Font("Segoe UI", 12F);
-            label9.Location = new Point(424, 61);
+            label9.Location = new Point(38, 29);
             label9.Name = "label9";
             label9.Size = new Size(94, 21);
             label9.TabIndex = 45;
@@ -58,9 +59,9 @@
             // ddStreams
             // 
             ddStreams.FormattingEnabled = true;
-            ddStreams.Location = new Point(424, 85);
+            ddStreams.Location = new Point(38, 53);
             ddStreams.Name = "ddStreams";
-            ddStreams.Size = new Size(250, 23);
+            ddStreams.Size = new Size(250, 29);
             ddStreams.TabIndex = 44;
             ddStreams.SelectedIndexChanged += DDStreams_SelectedIndexChanged;
             // 
@@ -70,41 +71,46 @@
             txtRuleResults.Multiline = true;
             txtRuleResults.Name = "txtRuleResults";
             txtRuleResults.ScrollBars = ScrollBars.Vertical;
-            txtRuleResults.Size = new Size(552, 484);
+            txtRuleResults.Size = new Size(643, 608);
             txtRuleResults.TabIndex = 46;
-            // 
-            // lblCountMessage
-            // 
-            lblCountMessage.AutoSize = true;
-            lblCountMessage.BackColor = SystemColors.Control;
-            lblCountMessage.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblCountMessage.Location = new Point(427, 638);
-            lblCountMessage.Name = "lblCountMessage";
-            lblCountMessage.Size = new Size(116, 21);
-            lblCountMessage.TabIndex = 47;
-            lblCountMessage.Text = "Rules in Group:";
             // 
             // groupBox3
             // 
             groupBox3.BackColor = SystemColors.Control;
+            groupBox3.Controls.Add(lblCompareDiff);
+            groupBox3.Controls.Add(label2);
             groupBox3.Controls.Add(BtnRunAllTEsts);
             groupBox3.Controls.Add(btnRunTests);
             groupBox3.Controls.Add(txtRuleResults);
+            groupBox3.Controls.Add(label9);
+            groupBox3.Controls.Add(lblStatus);
+            groupBox3.Controls.Add(ddStreams);
             groupBox3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            groupBox3.Location = new Point(386, 32);
+            groupBox3.Location = new Point(297, 32);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(614, 700);
+            groupBox3.Size = new Size(1442, 763);
             groupBox3.TabIndex = 49;
             groupBox3.TabStop = false;
             groupBox3.Text = "Region Testing";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = SystemColors.Control;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(38, 89);
+            label2.Name = "label2";
+            label2.Size = new Size(113, 21);
+            label2.TabIndex = 58;
+            label2.Text = "Testing Activity";
             // 
             // BtnRunAllTEsts
             // 
             BtnRunAllTEsts.BackColor = SystemColors.ButtonFace;
             BtnRunAllTEsts.Font = new Font("Segoe UI", 12F);
-            BtnRunAllTEsts.Location = new Point(448, 43);
+            BtnRunAllTEsts.Location = new Point(576, 48);
             BtnRunAllTEsts.Name = "BtnRunAllTEsts";
-            BtnRunAllTEsts.Size = new Size(142, 37);
+            BtnRunAllTEsts.Size = new Size(105, 37);
             BtnRunAllTEsts.TabIndex = 55;
             BtnRunAllTEsts.Text = "Run All Tests";
             BtnRunAllTEsts.UseVisualStyleBackColor = false;
@@ -114,7 +120,7 @@
             // 
             btnRunTests.BackColor = SystemColors.ButtonFace;
             btnRunTests.Font = new Font("Segoe UI", 12F);
-            btnRunTests.Location = new Point(320, 43);
+            btnRunTests.Location = new Point(308, 48);
             btnRunTests.Name = "btnRunTests";
             btnRunTests.Size = new Size(88, 37);
             btnRunTests.TabIndex = 54;
@@ -126,7 +132,7 @@
             // 
             lblStatus.AutoSize = true;
             lblStatus.Font = new Font("Segoe UI", 12F);
-            lblStatus.Location = new Point(65, 563);
+            lblStatus.Location = new Point(38, 739);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(44, 21);
             lblStatus.TabIndex = 50;
@@ -137,7 +143,7 @@
             txtProduct.Font = new Font("Segoe UI", 12F);
             txtProduct.Location = new Point(29, 68);
             txtProduct.Name = "txtProduct";
-            txtProduct.Size = new Size(298, 29);
+            txtProduct.Size = new Size(244, 29);
             txtProduct.TabIndex = 51;
             // 
             // label1
@@ -156,7 +162,7 @@
             btnCopyFromGolden.Font = new Font("Segoe UI", 12F);
             btnCopyFromGolden.Location = new Point(29, 113);
             btnCopyFromGolden.Name = "btnCopyFromGolden";
-            btnCopyFromGolden.Size = new Size(298, 37);
+            btnCopyFromGolden.Size = new Size(244, 37);
             btnCopyFromGolden.TabIndex = 53;
             btnCopyFromGolden.Text = "Populate from Golden SQL";
             btnCopyFromGolden.UseVisualStyleBackColor = false;
@@ -164,11 +170,12 @@
             // 
             // txtCompareResults
             // 
+            txtCompareResults.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCompareResults.Location = new Point(1035, 151);
             txtCompareResults.Multiline = true;
             txtCompareResults.Name = "txtCompareResults";
             txtCompareResults.ScrollBars = ScrollBars.Vertical;
-            txtCompareResults.Size = new Size(485, 484);
+            txtCompareResults.Size = new Size(692, 608);
             txtCompareResults.TabIndex = 56;
             // 
             // lblCompareResults
@@ -182,6 +189,15 @@
             lblCompareResults.TabIndex = 57;
             lblCompareResults.Text = "Compare Results:";
             // 
+            // lblCompareDiff
+            // 
+            lblCompareDiff.AutoSize = true;
+            lblCompareDiff.Font = new Font("Segoe UI", 12F);
+            lblCompareDiff.Location = new Point(738, 730);
+            lblCompareDiff.Name = "lblCompareDiff";
+            lblCompareDiff.Size = new Size(0, 21);
+            lblCompareDiff.TabIndex = 59;
+            // 
             // FrmTests
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -192,10 +208,6 @@
             Controls.Add(btnCopyFromGolden);
             Controls.Add(label1);
             Controls.Add(txtProduct);
-            Controls.Add(lblStatus);
-            Controls.Add(lblCountMessage);
-            Controls.Add(label9);
-            Controls.Add(ddStreams);
             Controls.Add(groupBox3);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "FrmTests";
@@ -212,7 +224,6 @@
         private Label label9;
         private ComboBox ddStreams;
         private TextBox txtRuleResults;
-        private Label lblCountMessage;
         private GroupBox groupBox3;
         private Label lblStatus;
         private TextBox txtProduct;
@@ -222,5 +233,7 @@
         private Button BtnRunAllTEsts;
         private TextBox txtCompareResults;
         private Label lblCompareResults;
+        private Label label2;
+        private Label lblCompareDiff;
     }
 }
