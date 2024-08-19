@@ -15,6 +15,8 @@ internal static class ScriptGenerator
 
         string fileinsertDName = "zzz_update_d_rules.sql";
 
+        string filefixJPFSCName = "zzzz_optional_fix_JPFSC.sql";
+
         try
         {
             string filecontents = @$"BEGIN
@@ -236,59 +238,51 @@ internal static class ScriptGenerator
             functionContents += $" {Environment.NewLine} {Environment.NewLine}/ {Environment.NewLine}{Environment.NewLine}";
 
             File.WriteAllText($"{outputFolder}/{fileFunctionName}", functionContents);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
 
-        return ok;
-    }
+            //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    internal static bool GenerateGeneral(string OracleConnString, string outputFolder)
-    {
-        bool ok;
-        StringBuilder sb = new();
+            string fixContents = @"
+                                    -- this file is only needed if JPFSC text phrases    
+                                    --  do NOT have specific severity assignments as required by other JP rules in the stream
 
-        try
-        {
-            DropAndCreateTempTable(OracleConnString);
+                                    UPDATE T_PHRASE_LINKAGE
+                                    SET F_SEVERITY = 
+                                    (SELECT SEV.SEV_LEVEL 
+                                    FROM (SELECT 'JPFSC' DATA, 'JPFSC002' TEXTCODE, '10' SEV_LEVEL FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC003', '11' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC004', '12' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC005', '20' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC006', '21' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC007', '22' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC008', '23' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC009', '24' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC010', '25' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC011', '30' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC012', '31' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC013', '32' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC014', '33' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC015', '401' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC016', '412' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC017', '411' FROM DUAL
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC018', '400' FROM DUAL
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC019', '422' FROM DUAL
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC020', '421' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC021', '432' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC022', '431' FROM DUAL
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC023', '440' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC024', '4' FROM DUAL
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC025', '50' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC026', '51' FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC027', '6'  FROM DUAL 
+                                    UNION ALL SELECT 'JPFSC', 'JPFSC028', '499' FROM DUAL) SEV 
+                                    WHERE F_DATA_CODE = SEV.DATA 
+                                    AND F_TEXT_CODE = SEV.TEXTCODE 
+                                    AND F_SEVERITY <> SEV.SEV_LEVEL) 
+                                    WHERE F_DATA_CODE = 'JPFSC';
 
-            OracleConnection conn = new()
-            {
-                ConnectionString = OracleConnString
-            };
+                                    COMMIT;";
 
-            OracleCommand cmd = new()
-            {
-                Connection = conn,
-                CommandText = @"INSERT INTO TMPRULED (F_RULE_NUMBER,F_CALC,F_CALC_ORA)
-								SELECT F_RULE_NUMBER, F_CALC, F_CALC_ORA 
-								FROM T_D_RULES 
-								WHERE LENGTH(F_CALC_ORA) > 0"
-            };
-
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
-
-            //-------------------------------------------------------------------------------------------------------------
-
-            cmd.CommandText = @"SELECT F_RULE_NUMBER, F_CALC_ORA FROM TMPRULED";
-
-            conn.Open();
-            OracleDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                sb.AppendLine($"INSERT INTO TMPRULED VALUES({reader["F_RULE_NUMBER"]}, null , TO_NCLOB(q'^{reader["F_CALC_ORA"]}^'));");
-            };
-            reader.Close();
-            conn.Close();
-
-            File.WriteAllText(outputFolder + "scripts.sql", sb.ToString());
-
-            ok = true;
+            File.WriteAllText($"{outputFolder}/{filefixJPFSCName}", fixContents);
 
         }
         catch (Exception ex)
@@ -299,6 +293,60 @@ internal static class ScriptGenerator
 
         return ok;
     }
+
+    //internal static bool GenerateGeneral(string OracleConnString, string outputFolder)
+    //{
+    //    bool ok;
+    //    StringBuilder sb = new();
+
+    //    try
+    //    {
+    //        DropAndCreateTempTable(OracleConnString);
+
+    //        OracleConnection conn = new()
+    //        {
+    //            ConnectionString = OracleConnString
+    //        };
+
+    //        OracleCommand cmd = new()
+    //        {
+    //            Connection = conn,
+    //            CommandText = @"INSERT INTO TMPRULED (F_RULE_NUMBER,F_CALC,F_CALC_ORA)
+				//				SELECT F_RULE_NUMBER, F_CALC, F_CALC_ORA 
+				//				FROM T_D_RULES 
+				//				WHERE LENGTH(F_CALC_ORA) > 0"
+    //        };
+
+    //        conn.Open();
+    //        cmd.ExecuteNonQuery();
+    //        conn.Close();
+
+    //        //-------------------------------------------------------------------------------------------------------------
+
+    //        cmd.CommandText = @"SELECT F_RULE_NUMBER, F_CALC_ORA FROM TMPRULED";
+
+    //        conn.Open();
+    //        OracleDataReader reader = cmd.ExecuteReader();
+    //        while (reader.Read())
+    //        {
+    //            sb.AppendLine($"INSERT INTO TMPRULED VALUES({reader["F_RULE_NUMBER"]}, null , TO_NCLOB(q'^{reader["F_CALC_ORA"]}^'));");
+    //        };
+    //        reader.Close();
+    //        conn.Close();
+
+    //        File.WriteAllText(outputFolder + "scripts.sql", sb.ToString());
+
+    //        ok = true;
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine(ex.Message);
+    //        throw;
+    //    }
+
+    //    return ok;
+    //}
 
 
     static bool DropAndCreateTempTable(string OracleConnString)
