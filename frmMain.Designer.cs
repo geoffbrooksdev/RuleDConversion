@@ -1,5 +1,5 @@
 ﻿namespace RuleDConversion;
-partial class frmMain
+partial class FrmMain
 {
 	/// <summary>
 	/// Required designer variable.
@@ -32,6 +32,7 @@ partial class frmMain
         scriptsToolStripMenuItem = new ToolStripMenuItem();
         updateToolStripMenuItem = new ToolStripMenuItem();
         productTestsToolStripMenuItem = new ToolStripMenuItem();
+        generateOutputScriptsToolStripMenuItem = new ToolStripMenuItem();
         menuStrip1.SuspendLayout();
         SuspendLayout();
         // 
@@ -46,7 +47,7 @@ partial class frmMain
         // 
         // rulesToolStripMenuItem
         // 
-        rulesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { scriptsToolStripMenuItem, updateToolStripMenuItem, productTestsToolStripMenuItem });
+        rulesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { scriptsToolStripMenuItem, updateToolStripMenuItem, productTestsToolStripMenuItem, generateOutputScriptsToolStripMenuItem });
         rulesToolStripMenuItem.Name = "rulesToolStripMenuItem";
         rulesToolStripMenuItem.Size = new Size(46, 20);
         rulesToolStripMenuItem.Text = "Tools";
@@ -54,23 +55,30 @@ partial class frmMain
         // scriptsToolStripMenuItem
         // 
         scriptsToolStripMenuItem.Name = "scriptsToolStripMenuItem";
-        scriptsToolStripMenuItem.Size = new Size(247, 22);
-        scriptsToolStripMenuItem.Text = "Migrate Golden  && Create Scripts";
+        scriptsToolStripMenuItem.Size = new Size(231, 22);
+        scriptsToolStripMenuItem.Text = "Migrate Golden SQL to Oracle";
         scriptsToolStripMenuItem.Click += ScriptsToolStripMenuItem_Click;
         // 
         // updateToolStripMenuItem
         // 
         updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-        updateToolStripMenuItem.Size = new Size(247, 22);
+        updateToolStripMenuItem.Size = new Size(231, 22);
         updateToolStripMenuItem.Text = "Edit Single Rule";
         updateToolStripMenuItem.Click += UpdateToolStripMenuItem_Click;
         // 
         // productTestsToolStripMenuItem
         // 
         productTestsToolStripMenuItem.Name = "productTestsToolStripMenuItem";
-        productTestsToolStripMenuItem.Size = new Size(247, 22);
+        productTestsToolStripMenuItem.Size = new Size(231, 22);
         productTestsToolStripMenuItem.Text = "Product Tests";
         productTestsToolStripMenuItem.Click += ProductTestsToolStripMenuItem_Click;
+        // 
+        // generateOutputScriptsToolStripMenuItem
+        // 
+        generateOutputScriptsToolStripMenuItem.Name = "generateOutputScriptsToolStripMenuItem";
+        generateOutputScriptsToolStripMenuItem.Size = new Size(231, 22);
+        generateOutputScriptsToolStripMenuItem.Text = "Generate Output Scripts";
+        generateOutputScriptsToolStripMenuItem.Click += GenerateOutputScriptsToolStripMenuItem_Click;
         // 
         // frmMain
         // 
@@ -97,4 +105,5 @@ partial class frmMain
 	private ToolStripMenuItem scriptsToolStripMenuItem;
     private ToolStripMenuItem updateToolStripMenuItem;
     private ToolStripMenuItem productTestsToolStripMenuItem;
+    private ToolStripMenuItem generateOutputScriptsToolStripMenuItem;
 }

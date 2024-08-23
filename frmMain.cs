@@ -1,19 +1,19 @@
 ﻿namespace RuleDConversion;
-public partial class frmMain : Form
+public partial class FrmMain : Form
 {
-    public frmMain()
+    public FrmMain()
     {
         InitializeComponent();
     }
 
-    void StreamsToolStripMenuItem1_Click(object sender, EventArgs e)
-    {
-        FrmStreamMemberUpdaate newMDIChild = new()
-        {
-            MdiParent = this
-        };
-        newMDIChild.Show();
-    }
+    //void StreamsToolStripMenuItem1_Click(object sender, EventArgs e)
+    //{
+    //    FrmStreamMemberUpdaate newMDIChild = new()
+    //    {
+    //        MdiParent = this
+    //    };
+    //    newMDIChild.Show();
+    //}
 
     private void ScriptsToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -45,6 +45,16 @@ public partial class frmMain : Form
     private void ProductTestsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         FrmTests newMDIChild = new()
+        {
+            MdiParent = this
+        };
+        newMDIChild.Show();
+
+    }
+
+    private void GenerateOutputScriptsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        FrmFinal newMDIChild = new()
         {
             MdiParent = this
         };

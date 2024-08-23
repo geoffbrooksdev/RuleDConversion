@@ -2,8 +2,7 @@
 
 namespace RuleDConversion;
 public partial class FrmScripts : Form
-{
-    static string OracleConnString;
+{    
     List<RegionalStream> streams = [];
 
     public FrmScripts()
@@ -26,25 +25,25 @@ public partial class FrmScripts : Form
 
     }
 
-    private void Button1_Click(object sender, EventArgs e)
-    {
-        OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
-        Text = ocsb.DataSource;
-        OracleConnString = ocsb.ConnectionString;
+    //private void Button1_Click(object sender, EventArgs e)
+    //{
+    //    OracleConnectionStringBuilder ocsb = Utils.GetOracleConnectionSB();
+    //    Text = ocsb.DataSource;
+    //    OracleConnString = ocsb.ConnectionString;
 
-        lblStatus.Text = $"Connected to {ocsb.DataSource}";
-        lblGenScripts.Text = "Creating script files...";
-        Application.DoEvents();
+    //    lblStatus.Text = $"Connected to {ocsb.DataSource}";
+    //    lblGenScripts.Text = "Creating script files...";
+    //    Application.DoEvents();
 
-        bool ok = ScriptGenerator.GenerateRegionals(OracleConnString, txtScriptOutputFolder.Text);
+    //    bool ok = ScriptGenerator.GenerateRegionals(OracleConnString, txtScriptOutputFolder.Text);
 
-        if (ok)
-        {
-            lblStatus.Text = $"Script creation complete. Result {ok}";
-            lblGenScripts.Text = "Finished creating script files...";
-            Application.DoEvents();
-        }
-    }
+    //    if (ok)
+    //    {
+    //        lblStatus.Text = $"Script creation complete. Result {ok}";
+    //        lblGenScripts.Text = "Finished creating script files...";
+    //        Application.DoEvents();
+    //    }
+    //}
 
     private void BtnLoadGolden_Click(object sender, EventArgs e)
     {
@@ -179,8 +178,10 @@ public partial class FrmScripts : Form
         txtRuleResults.Text += $"-------------------------------- {Environment.NewLine}";
 
         lblCountMessage.Text = $"Rules in stream {ruleCount}, # Rules tested: {execCount}, Errors: {errorCount}";
-
     }
 
-   
+    private void GroupBox1_Enter(object sender, EventArgs e)
+    {
+
+    }
 }

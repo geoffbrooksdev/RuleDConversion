@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtScriptOutputFolder = new TextBox();
-            label3 = new Label();
-            button1 = new Button();
             lblStatus = new Label();
             btnLoadGolden = new Button();
             btnRebuild = new Button();
@@ -41,54 +38,20 @@
             txtRuleResults = new TextBox();
             lblCountMessage = new Label();
             groupBox1 = new GroupBox();
-            lblGenScripts = new Label();
-            label2 = new Label();
             label1 = new Label();
-            pictureBox1 = new PictureBox();
             groupBox2 = new GroupBox();
             groupBox3 = new GroupBox();
+            label2 = new Label();
+            label3 = new Label();
             groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox2.SuspendLayout();
             SuspendLayout();
-            // 
-            // txtScriptOutputFolder
-            // 
-            txtScriptOutputFolder.Font = new Font("Segoe UI", 12F);
-            txtScriptOutputFolder.Location = new Point(12, 598);
-            txtScriptOutputFolder.Name = "txtScriptOutputFolder";
-            txtScriptOutputFolder.Size = new Size(298, 29);
-            txtScriptOutputFolder.TabIndex = 2;
-            txtScriptOutputFolder.Text = "c:\\oratemp\\test\\";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = SystemColors.GradientInactiveCaption;
-            label3.Font = new Font("Segoe UI", 12F);
-            label3.Location = new Point(12, 568);
-            label3.Name = "label3";
-            label3.Size = new Size(151, 21);
-            label3.TabIndex = 3;
-            label3.Text = "Script Output Folder";
-            // 
-            // button1
-            // 
-            button1.BackColor = SystemColors.ButtonFace;
-            button1.Font = new Font("Segoe UI", 12F);
-            button1.Location = new Point(10, 637);
-            button1.Name = "button1";
-            button1.Size = new Size(83, 34);
-            button1.TabIndex = 4;
-            button1.Text = "Go";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += Button1_Click;
             // 
             // lblStatus
             // 
             lblStatus.AutoSize = true;
             lblStatus.Font = new Font("Segoe UI", 12F);
-            lblStatus.Location = new Point(12, 247);
+            lblStatus.Location = new Point(0, 357);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(44, 21);
             lblStatus.TabIndex = 5;
@@ -98,7 +61,7 @@
             // 
             btnLoadGolden.BackColor = SystemColors.ButtonFace;
             btnLoadGolden.Font = new Font("Segoe UI", 12F);
-            btnLoadGolden.Location = new Point(6, 105);
+            btnLoadGolden.Location = new Point(6, 128);
             btnLoadGolden.Name = "btnLoadGolden";
             btnLoadGolden.Size = new Size(203, 37);
             btnLoadGolden.TabIndex = 8;
@@ -110,7 +73,7 @@
             // 
             btnRebuild.BackColor = SystemColors.ButtonFace;
             btnRebuild.Font = new Font("Segoe UI", 12F);
-            btnRebuild.Location = new Point(6, 171);
+            btnRebuild.Location = new Point(6, 238);
             btnRebuild.Name = "btnRebuild";
             btnRebuild.Size = new Size(203, 42);
             btnRebuild.TabIndex = 9;
@@ -187,16 +150,12 @@
             // 
             groupBox1.BackColor = SystemColors.Control;
             groupBox1.CausesValidation = false;
-            groupBox1.Controls.Add(lblGenScripts);
+            groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(btnRebuild);
             groupBox1.Controls.Add(btnLoadGolden);
             groupBox1.Controls.Add(lblStatus);
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(button1);
-            groupBox1.Controls.Add(txtScriptOutputFolder);
-            groupBox1.Controls.Add(pictureBox1);
             groupBox1.FlatStyle = FlatStyle.Flat;
             groupBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             groupBox1.Location = new Point(12, 32);
@@ -204,44 +163,16 @@
             groupBox1.Size = new Size(386, 708);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Script Actions";
-            // 
-            // lblGenScripts
-            // 
-            lblGenScripts.AutoSize = true;
-            lblGenScripts.BackColor = SystemColors.GradientInactiveCaption;
-            lblGenScripts.Location = new Point(120, 647);
-            lblGenScripts.Name = "lblGenScripts";
-            lblGenScripts.Size = new Size(44, 21);
-            lblGenScripts.TabIndex = 12;
-            lblGenScripts.Text = "Idle...";
-            // 
-            // label2
-            // 
-            label2.BackColor = SystemColors.GradientInactiveCaption;
-            label2.Location = new Point(12, 455);
-            label2.Name = "label2";
-            label2.Size = new Size(348, 51);
-            label2.TabIndex = 11;
-            label2.Text = "When all rule updates are complete: generate a new set of scripts";
+            groupBox1.Text = "Golden Migration";
+            groupBox1.Enter += GroupBox1_Enter;
             // 
             // label1
             // 
-            label1.Location = new Point(10, 29);
+            label1.Location = new Point(12, 43);
             label1.Name = "label1";
             label1.Size = new Size(332, 62);
             label1.TabIndex = 10;
             label1.Text = "These actions are done when a new golden release is available";
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = SystemColors.GradientInactiveCaption;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Location = new Point(0, 442);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(376, 260);
-            pictureBox1.TabIndex = 11;
-            pictureBox1.TabStop = false;
             // 
             // groupBox2
             // 
@@ -266,6 +197,26 @@
             groupBox3.TabStop = false;
             groupBox3.Text = "Region Testing";
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F);
+            label2.Location = new Point(6, 103);
+            label2.Name = "label2";
+            label2.Size = new Size(43, 21);
+            label2.TabIndex = 11;
+            label2.Text = "First:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F);
+            label3.Location = new Point(6, 214);
+            label3.Name = "label3";
+            label3.Size = new Size(64, 21);
+            label3.TabIndex = 12;
+            label3.Text = "Second:";
+            // 
             // FrmScripts
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -281,12 +232,11 @@
             Controls.Add(groupBox3);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "FrmScripts";
-            Text = "Script Generator";
+            Text = "Migration";
             WindowState = FormWindowState.Maximized;
             Load += FrmScripts_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             ResumeLayout(false);
@@ -294,11 +244,6 @@
         }
 
         #endregion
-
-
-        private TextBox txtScriptOutputFolder;
-        private Label label3;
-        private Button button1;
         private Label lblStatus;
         private Button btnLoadGolden;
         private Button btnRebuild;
@@ -311,9 +256,8 @@
         private GroupBox groupBox1;
         private GroupBox groupBox2;
         private GroupBox groupBox3;
-        private Label label2;
         private Label label1;
-        private PictureBox pictureBox1;
-        private Label lblGenScripts;
+        private Label label3;
+        private Label label2;
     }
 }
